@@ -52,7 +52,7 @@ config.vm.network "private_network", ip: "192.168.56.11"
 
    vb.name = "keyrock"
    # Customize the amount of memory on the VM:
-   vb.memory = "3072"
+   vb.memory = "1536"
   end
 
   # View the documentation for the provider you are using for more
