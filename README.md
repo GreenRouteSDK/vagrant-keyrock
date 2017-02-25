@@ -18,13 +18,13 @@ vagrant halt
 vagrant suspend
 ```
 
-## Restore
+## Resume
 
 ```bash
 vagrant resume
 ```
 
-## Restart
+## Start
 
 ```bash
 vagrant up
