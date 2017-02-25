@@ -34,6 +34,8 @@ docker start idm
 exit
 ```
 
+> Por bug del `vagrant`, forzamos el inicio de interface de red
+
 ## Stop
 
 ```bash
