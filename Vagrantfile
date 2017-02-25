@@ -87,11 +87,12 @@ config.vm.network "private_network", ip: "192.168.56.11"
 #     yum install kernel-devel
      yum clean all
      docker run --restart=always -d --name idm -p 8000:8000 -p 5000:5000 -t  fiware/idm
-     # Por bug de vagrant se forza el inicio de la interface de red
-     # Quitar cuando se corrija el bug
-     [ $(ifconfig eth1 | grep inet | wc -l) = 0 ] && ifup eth1
-     chmod +x /etc/rc.d/rc.local
-     echo "[ $(ifconfig eth1 | grep inet | wc -l) = 0 ]" >> /etc/rc.d/rc.local
-     # fin del correccion para el bug
   SHELL
+
+  # Por bug de vagrant se forza el inicio de la interface de red
+  # Quitar cuando se corrija el bug
+  # fin del correccion para el bug
+  config.vm.provision "shell", run: 'always', inline: <<-SHELL2
+     [ $(ifconfig eth1 | grep inet | wc -l) = 0 ] && ifup eth1
+  SHELL2
 end
