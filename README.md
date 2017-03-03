@@ -24,8 +24,22 @@ vagrant suspend
 vagrant resume
 ```
 
-## Stop
+## Access VM
 
 ```bash
-vagrant hatl
+vagrant ssh
+```
+
+# Inside VM
+
+## View IDM logs
+
+```bash
+docker logs -f idm
+```
+
+## Enter docker (via bash)
+
+```bash
+docker exec -i -t idm /bin/bash
 ```

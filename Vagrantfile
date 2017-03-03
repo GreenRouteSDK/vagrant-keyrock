@@ -71,7 +71,7 @@ config.vm.network "private_network", ip: "192.168.56.11"
 
   config.vm.provision "shell", inline: <<-SHELL
      yum -y update
-     yum -y install emacs-nox git nmap net-tools
+     yum -y install emacs-nox git nmap net-tools vim
      curl -fsSL https://get.docker.com/ | sh
      systemctl enable docker
      systemctl start docker
