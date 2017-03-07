@@ -69,6 +69,13 @@ config.vm.network "private_network", ip: "192.168.56.11"
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
 
+  # Por bug de vagrant 1.9.0 y 1.9.1 se forza el inicio de la interface de red
+  # Quitar cuando se corrija el bug (version 1.9.2)
+  config.vm.provision "shell", run: 'always', inline: <<-SHELL0
+     [ $(ifconfig eth1 | grep inet | wc -l) = 0 ] && ifup eth1
+  SHELL0
+  # fin del correccion para el bug
+
   config.vm.provision "shell", inline: <<-SHELL
      yum -y update
      yum -y install emacs-nox git nmap net-tools vim
@@ -82,17 +89,7 @@ config.vm.network "private_network", ip: "192.168.56.11"
      pip install backports.ssl_match_hostname --upgrade
      pip install docker-compose
      yum -y upgrade python*
-#     yum -y --enablerepo=epel install dkms
-#     yum groupinstall "Development Tools"
-#     yum install kernel-devel
      yum clean all
      docker run --restart=always -d --name idm -p 8000:8000 -p 5000:5000 -t  fiware/idm
   SHELL
-
-  # Por bug de vagrant se forza el inicio de la interface de red
-  # Quitar cuando se corrija el bug
-  # fin del correccion para el bug
-  config.vm.provision "shell", run: 'always', inline: <<-SHELL2
-     [ $(ifconfig eth1 | grep inet | wc -l) = 0 ] && ifup eth1
-  SHELL2
 end
