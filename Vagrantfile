@@ -25,11 +25,15 @@ Vagrant.configure("2") do |config|
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
   # config.vm.network "forwarded_port", guest: 80, host: 8080
+  config.vm.network "forwarded_port", guest: 1026, host: 1026
+  config.vm.network "forwarded_port", guest: 8000, host: 8000
+  config.vm.network "forwarded_port", guest: 5000, host: 5000
+  config.vm.network "forwarded_port", guest: 27017, host: 27017
+  config.vm.network "forwarded_port", guest: 28017, host: 28017
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
-
-config.vm.network "private_network", ip: "192.168.56.11"
+  # config.vm.network "private_network", ip: "192.168.56.11"
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
@@ -69,19 +73,11 @@ config.vm.network "private_network", ip: "192.168.56.11"
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
 
+  config.vm.provision "file", source: "./config-file/docker-compose.yml", destination: "docker-compose.yml"
+
   config.vm.provision "shell", inline: <<-SHELL1
      yum -y update
-     yum -y install emacs-nox git nmap net-tools vim
-  SHELL1
-
-  # Por bug de vagrant 1.9.0 y 1.9.1 se forza el inicio de la interface de red
-  # Comentar en la versión 1.9.2
-#  config.vm.provision "shell", run: 'always', inline: <<-SHELL2
-#      [ $(ifconfig eth1 | grep inet | wc -l) = 0 ] && ifup eth1
-#  SHELL2
-  # fin del correccion para el bug
-
-  config.vm.provision "shell", inline: <<-SHELL3
+     yum -y install emacs-nox vim
      curl -fsSL https://get.docker.com/ | sh
      systemctl enable docker
      systemctl start docker
@@ -93,9 +89,11 @@ config.vm.network "private_network", ip: "192.168.56.11"
      pip install docker-compose
      yum -y upgrade python*
      yum clean all
-     docker run --restart=always -d --name idm -p 8000:8000 -p 5000:5000 -t fiware/idm
-     docker run --restart=always -d --name mongo -p 27017:27017 -p 28017:28017 -t mongo
-     docker run --restart=always -d --name orion --link mongo -p 1026:1026 -t fiware/orion
-  SHELL3
+     chown vagrant:vagrant docker-compose.yml
+  SHELL1
+
+  config.vm.provision "shell", run: 'always', inline: <<-SHELL2
+    su - vagrant -c "docker-compose -d up"
+  SHELL2
 
 end
