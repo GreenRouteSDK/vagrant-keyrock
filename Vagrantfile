@@ -89,11 +89,11 @@ Vagrant.configure("2") do |config|
      pip install docker-compose
      yum -y upgrade python*
      yum clean all
-     chown vagrant:vagrant docker-compose.yml
+     chown vagrant docker-compose.yml
   SHELL1
 
   config.vm.provision "shell", run: 'always', inline: <<-SHELL2
-    su - vagrant -c "docker-compose -d up"
+    docker-compose up -d
   SHELL2
 
 end
