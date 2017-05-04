@@ -12,7 +12,7 @@ orion:
     - "1026:1026"
   command: -dbhost mongo
 idm:
-  image: fiware/idm
+  image: rodrigonievez/infotec-idm-image
   ports:
     - "8000:8000"
     - "5000:5000"
